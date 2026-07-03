@@ -1,100 +1,505 @@
-body {
-    text-align: center;
+/* ============================================
+   E-COMMERCE LANDING PAGE STYLES
+   ============================================ */
+
+.storeWrapper {
+    width: 100%;
+    min-height: 100vh;
+    padding-bottom: 0;
+    overflow-x: hidden;
+    background: var(--bg-deepest);
 }
 
-h1 {
-    color: white;
-    font-size: 48px;
+/* --- Hero Carousel --- */
+.heroCarousel {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    min-height: 400px;
+    max-height: 600px;
+    overflow: hidden;
+    background: #000;
 }
 
-.Algorithms {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-
-.Algorithms p {
-    font-size: 1.2em;
-    margin-bottom: 40px;
-    line-height: 1.6;
-}
-
-.AlgoButton {
-    min-width: 250px;
-    min-height: 200px; /* Added minimum height for better layout */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    transition: transform 0.3s, background-color 0.3s;
-    cursor: pointer;
-    position: relative; /* Added for positioning the links */
-    overflow: hidden; /* Ensure child elements do not overflow */
-}
-
-.AlgoButton img {
-    width: 120px;
-    height: 120px;
-    margin-bottom: 10px;
-}
-
-.AlgoButton span {
-    font-size: 18px;
-    color: #007bff;
-}
-
-.AlgoButton:hover {
-    transform: scale(1.05);
-    background-color: #383838;
-}
-
-/* New styles for displaying the links on hover */
-.AlgoButton .AlgoList {
-    display: none;
+.carouselSlide {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #383838;
-    box-sizing: border-box;
-    z-index: 1;
-    border-radius: 10px; /* Ensures border radius is consistent */
-    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    display: flex;
     align-items: center;
-    text-align: center;
+    padding: 0 var(--space-3xl);
+    background-size: cover;
+    background-position: center;
 }
 
-.AlgoButton:hover .AlgoList {
+.carouselSlide.active {
+    opacity: 1;
+    z-index: 10;
+}
+
+.slideContent {
+    max-width: 600px;
+    z-index: 2;
+    animation: fadeInUp 0.8s ease both;
+}
+
+.slideBadge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-md);
+}
+
+.slideTitle {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: var(--space-md);
+    color: #fff;
+}
+
+.slideDesc {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: var(--space-xl);
+    line-height: 1.6;
+}
+
+.ctaButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #000;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.ctaButton:hover {
+    transform: translateY(-2px);
+}
+
+/* Carousel Controls */
+.carouselControls {
+    position: absolute;
+    bottom: var(--space-xl);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 20;
+}
+
+.carouselDot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3); /* Keep hardcoded white as it's on a dark image overlay */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carouselDot.active {
+    background: #fff;
+    transform: scale(1.3);
+}
+
+/* --- Store Section Container --- */
+.storeSection {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--space-3xl) var(--space-xl);
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--space-xl);
+}
+
+.sectionTitle {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.viewAllLink {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.viewAllLink:hover {
+    color: var(--accent-cyan);
+}
+
+/* --- Shop by Category --- */
+.categoryRow {
+    display: flex;
+    gap: var(--space-md);
+    overflow-x: auto;
+    padding-bottom: var(--space-md);
+    scrollbar-width: none; /* Firefox */
+}
+
+.categoryRow::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.categoryPill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: var(--surface-glass);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    color: var(--text-secondary);
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.categoryPill:hover {
+    background: var(--glass-panel);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* --- Product Cards (Algorithms) --- */
+.productScroll {
+    display: flex;
+    gap: var(--space-lg);
+    overflow-x: auto;
+    padding-bottom: var(--space-xl);
+    padding-top: var(--space-sm);
+    margin: 0 calc(-1 * var(--space-xl));
+    padding-left: var(--space-xl);
+    padding-right: var(--space-xl);
+}
+
+.productGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-xl);
+}
+
+.productCard {
+    background: var(--surface-glass);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
     display: flex;
     flex-direction: column;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    min-width: 280px; /* For scroll area */
 }
 
-/* Ensures proper styling of list items */
-.AlgoList ul {
+.productCard:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-lg);
+}
+
+.productImage {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.productImage svg {
+    width: 64px;
+    height: 64px;
+    color: #fff;
+    opacity: 0.8;
+    z-index: 2;
+    transition: transform 0.5s ease;
+}
+
+.productCard:hover .productImage svg {
+    transform: scale(1.1);
+}
+
+/* Category Specific Image Backgrounds */
+.img-Sorting { background: linear-gradient(135deg, #4b134f, #c94b4b); }
+.img-Searching { background: linear-gradient(135deg, #114357, #f29492); }
+.img-Graph { background: linear-gradient(135deg, #0ba360, #3cba92); }
+.img-Greedy { background: linear-gradient(135deg, #ff7e5f, #feb47b); }
+.img-LinearDS { background: linear-gradient(135deg, #8e2de2, #4a00e0); }
+
+.productBadge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    z-index: 3;
+}
+
+.productInfo {
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.productCategory {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.productTitle {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 8px 0;
+}
+
+.productRating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: #ffd700;
+    margin-bottom: var(--space-md);
+}
+
+.ratingCount {
+    color: var(--text-muted);
+    margin-left: 4px;
+}
+
+.productFooter {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.productPrice {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+}
+
+.originalPrice {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+    margin-left: 8px;
+}
+
+.addToCartBtn {
+    background: var(--glass-panel);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.productCard:hover .addToCartBtn {
+    background: var(--text-primary);
+    color: var(--text-inverse);
+    transform: scale(1.1);
+}
+
+/* --- Offer Banner --- */
+.offerBanner {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: var(--space-2xl) 0;
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(123, 47, 247, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.offerBanner::after {
+    content: '50% OFF';
+    position: absolute;
+    right: -20px;
+    bottom: -40px;
+    font-size: 8rem;
+    font-weight: 900;
+    opacity: 0.1;
+    transform: rotate(-10deg);
+}
+
+.offerText h2 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+}
+
+.offerText p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.offerBtn {
+    background: #fff;
+    color: #000;
+    padding: 14px 32px;
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    text-decoration: none;
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+.offerBtn:hover {
+    transform: scale(1.05);
+}
+
+/* --- E-commerce Footer --- */
+.footer {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-subtle);
+    padding: var(--space-3xl) var(--space-xl) var(--space-xl);
+    margin-top: var(--space-3xl);
+}
+
+.footerGrid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: var(--space-2xl);
+    margin-bottom: var(--space-2xl);
+}
+
+.footerCol h3 {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    margin-bottom: var(--space-lg);
+}
+
+.footerCol p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-lg);
+}
+
+.footerList {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-.AlgoList h2 {
-    padding: 0;
-    margin: 0;
+
+.footerList li {
+    margin-bottom: 12px;
 }
 
-.AlgoList li {
-    margin: 10px 0;
-}
-
-.AlgoList a {
-    color: #007bff;
+.footerList a {
+    color: var(--text-secondary);
     text-decoration: none;
-    font-size: 18px;
+    transition: color 0.3s ease;
 }
 
-.AlgoList a:hover {
-    text-decoration: underline;
+.footerList a:hover {
+    color: var(--accent-cyan);
+}
+
+.newsletterForm {
+    display: flex;
+    gap: 8px;
+}
+
+.newsletterInput {
+    flex: 1;
+    padding: 10px 16px;
+    background: var(--glass-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    outline: none;
+}
+
+.newsletterBtn {
+    padding: 10px 20px;
+    background: var(--text-primary);
+    color: var(--text-inverse);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.footerBottom {
+    max-width: 1400px;
+    margin: 0 auto;
+    border-top: 1px solid var(--border-subtle);
+    padding-top: var(--space-xl);
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .footerGrid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .offerBanner {
+        flex-direction: column;
+        text-align: center;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 600px) {
+    .footerGrid {
+        grid-template-columns: 1fr;
+    }
+    .slideTitle {
+        font-size: 2rem;
+    }
 }

@@ -1,58 +1,145 @@
+/* ======================================
+   Binary Tree — Cosmic Dark Theme
+   ====================================== */
+
 .base {
     display: flex;
     justify-content: space-between;
+    gap: var(--space-lg);
+    padding: var(--space-md);
+    animation: fadeInUp 0.5s ease-out both;
 }
 
+/* --- Form Panels --- */
 .createTree {
     display: flex;
     flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-md);
+    background: var(--surface-glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
 }
 
 .UpdateTree {
-    margin-top: 20px;
+    margin-top: var(--space-md);
     display: flex;
     flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-md);
+    background: var(--surface-glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
 }
 
+/* --- SVG Canvas --- */
 .svgdiv {
     height: 700px;
     width: 700px;
-    background-color: #242424;
-    border: 2px solid var(--border-color);
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg), inset 0 1px 0 var(--surface-glass);
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.6s ease-out 0.1s both;
 }
 
+/* top glow accent */
+.svgdiv::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(ellipse at 50% 0%, rgba(123, 47, 247, 0.07) 0%, transparent 55%);
+    pointer-events: none;
+}
+
+/* --- Logs Panel --- */
 .Logs {
     width: 300px;
-    border: solid 2px var(--border-color);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--surface-glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-md);
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-default) transparent;
+    animation: fadeInUp 0.5s ease-out 0.2s both;
 }
 
+/* --- Button (purple accent) --- */
 .button {
-    background-color: #007bff;
+    background: linear-gradient(135deg, var(--accent-purple), #6320d4);
     width: fit-content;
-    color: var(--text-color);
+    color: #fff;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 22px;
     margin: 5px;
-    border-radius: 5px;
+    border-radius: var(--radius-md);
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+    box-shadow: 0 0 12px rgba(123, 47, 247, 0.25);
 }
 
 .button:hover {
-    background-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 0 22px rgba(123, 47, 247, 0.45), var(--shadow-md);
+    filter: brightness(1.12);
+}
+
+.button:active {
+    transform: translateY(0);
+    filter: brightness(0.93);
 }
 
 .button:disabled {
-    background-color: #cccccc;
+    background: var(--bg-elevated);
+    color: var(--text-muted);
     cursor: not-allowed;
+    box-shadow: none;
+    filter: none;
+    transform: none;
 }
 
+/* --- Input --- */
 .input {
-    padding: 5px;
+    padding: 8px 12px;
     margin: 5px;
-    border-radius: 5px;
-    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
     width: 200px;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background: var(--surface-glass);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.input::placeholder {
+    color: var(--text-muted);
+}
+
+.input:focus {
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 3px rgba(123, 47, 247, 0.15), var(--shadow-sm);
 }

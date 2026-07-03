@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import * as d3 from "d3";
-import Header from "../header";
+import { motion } from "framer-motion";
+import "../../css/bubbleSort.css";
 import SectionNav from "../sectionNav";
-import styles from "../../css/Bfs.module.css";
 
 function Bfs() {
     const svgRef = useRef(null);
@@ -13,6 +13,8 @@ function Bfs() {
     const [foundNode, setFoundNode] = useState(null);
     const [visitedNodes, setVisitedNodes] = useState([]);
     const [visitedLinks] = useState([]);
+    const [isSearching, setIsSearching] = useState(false);
+    const [currentStep, setCurrentStep] = useState("Ready to configure.");
 
     useEffect(() => {
         if (!treeData) return;
@@ -48,9 +50,9 @@ function Bfs() {
                     .y((d) => d.y)
                     .x((d) => d.x)
             )
-            .attr("fill", (d) => {
+            .attr("stroke", (d) => {
                 if (visitedLinks.includes(d.name)) return "red";
-                return "none";
+                return "#ccc";
             });
 
         const nodes = svg
@@ -63,23 +65,28 @@ function Bfs() {
 
         nodes
             .append("circle")
-            .attr("r", 8)
+            .attr("r", 20)
             .attr("fill", (d) => {
-                if (foundNode && d.data.name === foundNode) return "orange";
-                if (visitedNodes.includes(d.data.name)) return "red";
-                return "blue";
-            });
+                if (foundNode && d.data.name === foundNode) return "var(--success-color)";
+                if (visitedNodes.includes(d.data.name)) return "var(--primary-color)";
+                return "var(--surface-color)";
+            })
+            .attr("stroke", "var(--border-color)")
+            .attr("stroke-width", "2px");
 
         nodes
             .append("text")
             .attr("dy", ".35em")
-            .attr("x", (d) => (d.children ? -13 : 13))
-            .attr("fill", "white")
-            .style("text-anchor", (d) => (d.children ? "end" : "start"))
+            .attr("x", 0)
+            .attr("fill", "#ffffff")
+            .style("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("font-weight", "bold")
             .text((d) => d.data.name);
     }, [treeData, foundNode, visitedNodes, visitedLinks]);
 
     const generateNodes = (number) => {
+        if (isSearching) return;
         if (isNaN(number) || number <= 0) {
             alert("Please enter a valid number of nodes to generate!");
             return;
@@ -116,27 +123,51 @@ function Bfs() {
         const newTreeData = createBinaryTree(number);
         setTreeData(newTreeData);
         setNodeNumber("");
+        setVisitedNodes([]);
+        setFoundNode(null);
+        setCurrentStep(`Generated binary tree with ${number} nodes.`);
     };
 
     const searchNodeName = async (targetName) => {
+        if (isSearching) return;
         setFoundNode(null);
         setVisitedNodes([]);
-        if (!targetName) {
-            alert("Please enter a node name to search for!");
+        if (!targetName || !treeData) {
+            alert("Please generate a tree and enter a node name to search for!");
             return;
         }
+
+        setIsSearching(true);
+        setCurrentStep(`Initializing BFS search for node ${targetName}...`);
 
         const bfsSearch = (node) => {
             const queue = [node];
             const search = () => {
-                if (queue.length === 0) return;
+                if (queue.length === 0) {
+                    setCurrentStep(`Search complete. Node ${targetName} was not found.`);
+                    setIsSearching(false);
+                    return;
+                }
                 const currentNode = queue.shift();
                 setVisitedNodes((prevVisitedNodes) => [
                     ...prevVisitedNodes,
                     currentNode.name,
                 ]);
+                setCurrentStep(`Visiting node ${currentNode.name}...`);
+                
                 if (currentNode.name === targetName) {
                     setFoundNode(targetName);
+                    setCurrentStep(`Success! Node ${targetName} found.`);
+                    setIsSearching(false);
+                    
+                    if (localStorage.getItem("userInfo")) {
+                        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+                        axios.post(
+                            import.meta.env.VITE_topic,
+                            { userID: userInfo.userID, topic: "BFS", completed: true },
+                            { headers: { "Content-type": "application/json" }, withCredentials: true }
+                        ).catch(console.error);
+                    }
                     return;
                 }
                 if (currentNode.children) {
@@ -147,123 +178,114 @@ function Bfs() {
             search();
         };
 
-        if (localStorage.getItem("userInfo")) {
-            const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-            const config = {
-                headers: {
-                    "Content-type": "application/json",
-                },
-            };
-            const { data } = await axios.post(
-                import.meta.env.VITE_topic,
-                { userID: userInfo.userID, topic: "BFS", completed: true },
-                config
-            );
-
-            console.log("Submitted:", {
-                data,
-            });
-        }
-
-        console.log("*");
         bfsSearch(treeData);
         setTargetNodeName("");
     };
 
     return (
-        <div>
-            <Header />
+        <>
             <SectionNav />
-            <div className={styles.container}>
-                <h2 className={styles.heading}>
-                    Understanding Breadth-First Search (BFS)
-                </h2>
-                <p className={styles.paragraph}>
-                    Breadth-First Search (BFS) is an algorithm for traversing or
-                    searching tree or graph data structures. It starts at the
-                    root node and explores all nodes at the present depth before
-                    moving on to the nodes at the next depth level. BFS is
-                    commonly used in shortest path algorithms and in situations
-                    where we need to explore all possible paths in an unweighted
-                    graph or tree.
-                </p>
-            </div>
-
-            <div className={styles.inputContainer}>
-                <input
-                    type="number"
-                    value={nodeNumber}
-                    placeholder="Number of nodes"
-                    onChange={(e) => setNodeNumber(e.target.value)}
-                    className={styles.input}
-                />
-                <button
-                    onClick={() => generateNodes(parseInt(nodeNumber))}
-                    className={styles.button}
-                >
-                    Generate Nodes
-                </button>
-            </div>
-
-            <div className={styles.inputContainer}>
-                <input
-                    type="text"
-                    value={targetNodeName}
-                    placeholder="Node name to search"
-                    onChange={(e) => setTargetNodeName(e.target.value)}
-                    className={styles.input}
-                />
-                <button
-                    onClick={() => searchNodeName(targetNodeName)}
-                    className={styles.button}
-                >
-                    Search Node
-                </button>
-            </div>
-
-            <div style={{ display: "flex", marginTop: "20px" }}>
-                <div className={styles.stepsContainer}>
-                    <h3>Steps to Use</h3>
-                    <ol>
-                        <li>
-                            Enter the number of nodes to generate the binary
-                            tree.
-                        </li>
-                        <li>
-                            Click on &apos;Generate Nodes&apos; to create the
-                            tree.
-                        </li>
-                        <li>Enter the node name to search in the tree.</li>
-                        <li>
-                            Click on &apos;Search Node&apos; to start the BFS
-                            traversal.
-                        </li>
-                    </ol>
+            <div className="pdp-container">
+                {/* ═══════════════════════════════════════════
+                    LEFT COLUMN: PRODUCT SHOWCASE STAGE
+                    ═══════════════════════════════════════════ */}
+                <div className="pdp-showcase">
+                    <div className="showcase-stage" style={{ minHeight: "700px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <svg ref={svgRef} style={{ width: "100%", height: "100%", maxWidth: "700px", maxHeight: "700px" }}></svg>
+                    </div>
                 </div>
 
-                <div className={styles.svgContainer}>
-                    <svg ref={svgRef}></svg>
-                </div>
+                {/* ═══════════════════════════════════════════
+                    RIGHT COLUMN: CONFIGURATION PANEL
+                    ═══════════════════════════════════════════ */}
+                <div className="pdp-config">
+                    {/* Header */}
+                    <div className="config-header">
+                        <div className="config-category">Graph Algorithm</div>
+                        <h1 className="config-title">Breadth-First Search (BFS)</h1>
+                        <div className="config-rating">
+                            ★★★★★ <span style={{ color: "var(--text-muted)" }}>(1.2k reviews)</span>
+                        </div>
+                        <div className="config-price">
+                            Free <span>₹14.99</span>
+                        </div>
+                    </div>
 
-                <div className={styles.logsContainer}>
-                    <h3>Logs</h3>
-                    <div className={styles.logs}>
-                        {visitedNodes.map((node, index) => (
-                            <div key={index} className={styles.visitedNode}>
-                                {`Visited Node: ${node}`}
+                    {/* Controls */}
+                    <div className="config-section">
+                        <h3>Configuration</h3>
+                        <div className="config-controls" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                            <div style={{ display: "flex", gap: "10px" }}>
+                                <input
+                                    type="number"
+                                    value={nodeNumber}
+                                    placeholder="Number of nodes"
+                                    onChange={(e) => setNodeNumber(e.target.value)}
+                                    style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "1px solid var(--border-color)", background: "var(--surface-color)", color: "var(--text-color)" }}
+                                />
+                                <button 
+                                    className="btn-secondary" 
+                                    onClick={() => generateNodes(parseInt(nodeNumber))} 
+                                    disabled={isSearching}
+                                >
+                                    Generate Tree
+                                </button>
                             </div>
-                        ))}
-                        {foundNode && (
-                            <div
-                                className={styles.foundNode}
-                            >{`Found Node: ${foundNode}`}</div>
-                        )}
+                            <div style={{ display: "flex", gap: "10px" }}>
+                                <input
+                                    type="text"
+                                    value={targetNodeName}
+                                    placeholder="Node name to search"
+                                    onChange={(e) => setTargetNodeName(e.target.value)}
+                                    style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "1px solid var(--border-color)", background: "var(--surface-color)", color: "var(--text-color)" }}
+                                />
+                                <button 
+                                    className="btn-primary" 
+                                    onClick={() => searchNodeName(targetNodeName)} 
+                                    disabled={isSearching || !treeData}
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                    Search Node
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Algorithm Specs / Theory */}
+                    <div className="config-section">
+                        <h3>Product Details</h3>
+                        <p className="config-theory">
+                            Breadth-First Search (BFS) is a traversing algorithm that explores nodes layer by layer. 
+                            It starts from the root node and visits all immediate neighbors before moving to the next level. 
+                            Perfect for finding the shortest path in unweighted graphs or discovering nearby nodes quickly. 
+                            Uses a Queue structure for optimal FIFO processing. Time complexity is O(V + E) where V is vertices and E is edges.
+                        </p>
+                    </div>
+
+                    {/* Live Specs / Execution Logs */}
+                    <div className="config-section">
+                        <h3>Live Diagnostic Log</h3>
+                        <div className="log-box">
+                            <motion.div 
+                                key={currentStep}
+                                initial={{ opacity: 0, y: 5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                {currentStep}
+                            </motion.div>
+                            <div style={{ marginTop: "10px", fontSize: "0.9rem", color: "var(--text-muted)", maxHeight: "100px", overflowY: "auto" }}>
+                                {visitedNodes.length > 0 && <p>Visited: {visitedNodes.join(" → ")}</p>}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 
 export default Bfs;
+

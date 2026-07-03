@@ -1,0 +1,181 @@
+/* ======================================
+   Topbar — Organic Floating Design
+   ====================================== */
+
+.topbar {
+    height: auto;
+    min-height: 64px;
+    margin: 0;
+    background: var(--glass-heavy);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-subtle);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px var(--space-xl);
+    z-index: 90;
+    box-shadow: var(--shadow-md);
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.leftSection {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.breadcrumb {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.breadcrumbDivider {
+    color: var(--accent-purple);
+    font-weight: bold;
+}
+
+.searchBar {
+    position: relative;
+    width: auto;
+    flex-grow: 1;
+    max-width: 300px;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-default);
+    background: var(--glass-surface);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    outline: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.searchInput:focus {
+    background: var(--glass-panel);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 0 4px var(--shadow-glow-cyan);
+}
+
+.searchIcon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.rightSection {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+}
+
+.iconButton {
+    background: var(--glass-surface);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.2rem;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iconButton:hover {
+    color: var(--accent-cyan);
+    background: var(--glass-panel);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow-cyan);
+}
+
+.notificationBadge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    background: var(--accent-pink);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent-pink);
+}
+
+.profileMenu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 6px 16px 6px 6px;
+    border-radius: var(--radius-full);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    background: var(--glass-surface);
+    border: 1px solid var(--border-subtle);
+}
+
+.profileMenu:hover {
+    background: var(--glass-panel);
+    border-color: var(--border-default);
+    transform: translateY(-2px);
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.userName {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .topbar {
+        margin: 0;
+        padding: 8px 12px;
+    }
+    
+    .searchBar {
+        display: none; /* Hide search on very small screens for simplicity */
+    }
+    
+    .userName {
+        display: none; /* Icon only for profile */
+    }
+    
+    .profileMenu {
+        padding: 4px;
+    }
+}

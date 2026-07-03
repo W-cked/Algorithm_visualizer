@@ -1,91 +1,288 @@
+/* binarySearch.module.css — Cosmic Dark Glassmorphism Theme */
+
+/* ═══════════════════════════════════════════
+   Main Container Layout
+   ═══════════════════════════════════════════ */
+
 .binarySearchContainer {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     text-align: center;
-    margin: 20px;
+    margin: var(--space-lg);
+    gap: var(--space-lg);
+    animation: fadeIn 0.5s ease-out;
 }
+
+/* ═══════════════════════════════════════════
+   Array Container — Frosted Glass Stage
+   ═══════════════════════════════════════════ */
 
 .arrayContainer {
-    padding: 10px;
+    padding: var(--space-lg) var(--space-md);
     display: flex;
     justify-content: center;
-    margin: 20px 0;
-    border: 2px solid var(--border-color);
+    align-items: flex-end;
+    margin: var(--space-lg) 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--surface-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-md);
+    min-height: 280px;
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+    animation: fadeInUp 0.6s ease-out 0.1s both;
 }
 
+.arrayContainer::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan), var(--accent-purple));
+    opacity: 0.5;
+    animation: gradientShift 4s ease infinite;
+    background-size: 200% 100%;
+}
+
+/* ═══════════════════════════════════════════
+   Array Bars — Gradient Neon Pillars
+   ═══════════════════════════════════════════ */
+
 .arrayBar {
-    background-color: #007bff;
+    background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
     margin: 0 2px;
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    transition: background-color 0.3s ease;
-    color: var(--text-color);
-    font-size: 12px;
-    padding: 2px;
+    transition: all var(--transition-base) ease;
+    color: var(--text-primary);
+    font-size: 11px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    padding: 4px 2px;
     box-sizing: border-box;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    text-shadow: var(--shadow-sm);
+    box-shadow:
+        0 0 8px rgba(0, 212, 255, 0.15),
+        inset 0 1px 0 var(--border-default);
 }
 
-.arrayBar.swapping {
-    background-color: #ff6347; /* Color when element is being checked */
+.arrayBar:hover {
+    filter: brightness(1.2);
+    box-shadow:
+        0 0 16px rgba(0, 212, 255, 0.3),
+        0 0 32px rgba(123, 47, 247, 0.15);
+    transform: scaleY(1.02);
+    transform-origin: bottom;
 }
+
+/* Swapping / Active State — Pulsing Neon Glow */
+.arrayBar.swapping {
+    background: linear-gradient(180deg, var(--accent-orange), var(--accent-pink));
+    box-shadow:
+        0 0 12px rgba(255, 107, 53, 0.5),
+        0 0 28px rgba(255, 45, 149, 0.3),
+        0 0 48px rgba(255, 107, 53, 0.15);
+    animation: glowPulse 0.8s ease-in-out infinite;
+    transform: scaleX(1.05);
+    transform-origin: bottom center;
+    z-index: 2;
+}
+
+/* ═══════════════════════════════════════════
+   Steps Container — Glassmorphic Sidebar
+   ═══════════════════════════════════════════ */
 
 .stepsContainer {
     width: 300px;
     height: 500px;
-    margin-left: 20px;
+    margin-left: 0;
     text-align: left;
     max-width: 300px;
-    background-color: var(--background-color);
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: rgba(26, 26, 46, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-lg);
     overflow-y: auto;
     max-height: 500px;
+    position: relative;
+    animation: slideInLeft 0.6s ease-out 0.2s both;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-cyan) transparent;
+}
+
+.stepsContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-green), var(--accent-cyan), transparent);
+    opacity: 0.5;
+}
+
+.stepsContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+.stepsContainer::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.stepsContainer::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
+    border-radius: var(--radius-full);
 }
 
 .stepsContainer h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
+    font-size: 1.4em;
+    font-family: var(--font-display);
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
 }
 
 .stepsContainer ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
 .stepsContainer li {
-    margin: 5px 0;
-    font-size: 1em;
+    margin: var(--space-xs) 0;
+    font-size: 0.92em;
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    border-left: 2px solid transparent;
+    transition: all var(--transition-fast) ease;
+    line-height: 1.5;
 }
 
+.stepsContainer li:hover {
+    background: var(--surface-glass-hover);
+    border-left-color: var(--accent-cyan);
+    color: var(--text-primary);
+}
+
+.stepsContainer li:last-child {
+    border-left-color: var(--accent-green);
+    color: var(--accent-green);
+    font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════
+   Buttons — Premium Glow Buttons
+   ═══════════════════════════════════════════ */
+
 button {
-    background-color: #007bff;
-    color: var(--text-color);
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+    color: var(--text-primary);
     border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 5px;
+    padding: var(--space-sm) var(--space-lg);
+    margin: var(--space-xs);
+    border-radius: var(--radius-md);
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    transition: all var(--transition-base) ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 212, 255, 0.2);
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--glass-heavy), transparent);
+    opacity: 0;
+    transition: opacity var(--transition-fast) ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow:
+        0 4px 20px rgba(0, 212, 255, 0.35),
+        0 0 40px rgba(0, 123, 255, 0.15);
+    filter: brightness(1.1);
+}
+
+button:hover::before {
+    opacity: 1;
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 212, 255, 0.3);
 }
 
 button:disabled {
-    background-color: #cccccc;
+    background: var(--surface-glass);
+    color: var(--text-muted);
     cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+    filter: none;
+    border: 1px solid var(--border-subtle);
 }
 
+button:disabled::before {
+    display: none;
+}
+
+/* ═══════════════════════════════════════════
+   Number Input — Cosmic Input Field
+   ═══════════════════════════════════════════ */
+
 input[type="number"] {
-    padding: 5px;
-    margin: 5px;
-    border-radius: 5px;
-    border: 1px solid var(--border-color);
+    padding: var(--space-sm) var(--space-md);
+    margin: var(--space-xs);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
     width: 200px;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background: var(--surface-glass);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    transition: all var(--transition-base) ease;
+    outline: none;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+input[type="number"]:hover {
+    border-color: var(--border-default);
+    background: var(--surface-glass-hover);
+}
+
+input[type="number"]:focus {
+    border-color: var(--accent-cyan);
+    box-shadow:
+        0 0 0 3px rgba(0, 212, 255, 0.12),
+        0 0 20px rgba(0, 212, 255, 0.08);
+    background: rgba(0, 212, 255, 0.04);
+}
+
+input[type="number"]::placeholder {
+    color: var(--text-muted);
 }

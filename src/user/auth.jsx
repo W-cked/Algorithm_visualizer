@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import LoginForm from "./login";
 import RegisterForm from "./register";
-import Header from "../components/header";
 
 const Auth = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -13,14 +12,16 @@ const Auth = () => {
 
     return (
         <>
-            <Header />
-
+            
             <div className="auth-container">
                 <div className="form-switch">
-                    <h2>{isLogin ? "Login" : "Register"}</h2>
-                    <button onClick={toggleForm}>
-                        {isLogin ? "Go to Register" : "Go to Login"}
-                    </button>
+                    <h2>{isLogin ? "Welcome Back" : "Create Account"}</h2>
+                    <p style={{ marginTop: '8px' }}>
+                        {isLogin ? "Don't have an account? " : "Already have an account? "}
+                        <span onClick={toggleForm}>
+                            {isLogin ? "Register here" : "Login here"}
+                        </span>
+                    </p>
                 </div>
                 {isLogin ? <LoginForm /> : <RegisterForm />}
             </div>

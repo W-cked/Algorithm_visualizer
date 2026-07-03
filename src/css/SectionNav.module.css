@@ -1,20 +1,56 @@
+/* ============================================
+   SECTION NAV — Pill-Style Tab Bar
+   ============================================ */
+
 .navContainer {
     display: flex;
     justify-content: center;
-    padding: 10px;
-    border-bottom: 2px solid var(--border-color);
+    padding: var(--space-sm) var(--space-lg);
+    background: var(--surface-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+    animation: fadeIn 0.4s ease;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.navContainer::-webkit-scrollbar {
+    display: none;
 }
 
 .navLinks {
     display: flex;
-    gap: 15px;
+    gap: 6px;
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-subtle);
 }
 
 .navLinks a {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 18px;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-secondary);
     text-decoration: none;
-    color: #007bff;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-base);
+    white-space: nowrap;
+    position: relative;
 }
 
 .navLinks a:hover {
-    text-decoration: underline;
+    color: var(--text-primary);
+    background: var(--surface-glass-hover);
+}
+
+.navLinks a.active {
+    color: var(--text-primary);
+    background: var(--surface-glass-active);
+    box-shadow: var(--shadow-sm);
 }

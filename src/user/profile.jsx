@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/header";
 import axios from "axios";
+import "../css/profile.css";
 
 const Profile = () => {
     const [user, setUser] = useState({ username: "", email: "", userID: "" });
@@ -57,15 +57,13 @@ const Profile = () => {
 
     return (
         <>
-            <Header />
-            <div className="profile-page">
+                        <div className="profile-page">
                 <div className="profile-container">
                     <div className="profile-header">
                         <img
                             src="userProfile.png"
                             alt="Profile"
                             className="profile-image"
-                            height="150px"
                         />
                         <h1>
                             {user.username
@@ -78,32 +76,40 @@ const Profile = () => {
                         {user.username ? (
                             <>
                                 <p>
-                                    <strong>Username:</strong> {user.username}
+                                    <strong>Username</strong> <span>{user.username}</span>
                                 </p>
                                 <p>
-                                    <strong>Email:</strong> {user.email}
+                                    <strong>Email</strong> <span>{user.email}</span>
                                 </p>
-                                <h1>Progress List</h1>
-                                <ul>
-                                    {progress.map((item) => (
-                                        <li key={item._id}>
-                                            <h3>{item.topic}</h3>
-                                        </li>
-                                    ))}
-                                </ul>
-                                <button
-                                    onClick={fetchProgress}
-                                    className="logout-button"
-                                >
-                                    Progress
-                                </button>
+                                
+                                {progress.length > 0 && (
+                                    <>
+                                        <h1>Progress List</h1>
+                                        <ul>
+                                            {progress.map((item) => (
+                                                <li key={item._id}>
+                                                    <h3>{item.topic}</h3>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </>
+                                )}
+                                
+                                <div className="button-group">
+                                    <button
+                                        onClick={fetchProgress}
+                                        className="logout-button"
+                                    >
+                                        Load Progress
+                                    </button>
 
-                                <button
-                                    onClick={handleLogout}
-                                    className="logout-button"
-                                >
-                                    Logout
-                                </button>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="logout-button"
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
                             </>
                         ) : (
                             <p>No user is logged in.</p>

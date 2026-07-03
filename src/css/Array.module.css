@@ -1,29 +1,70 @@
-/* Array.module.css */
+/* Array.module.css — Cosmic Dark Glassmorphism Theme */
 
 .formContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px 0;
+    margin: var(--space-lg) 0;
+    padding: var(--space-lg);
+    background: var(--surface-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    gap: var(--space-sm);
+    animation: fadeInUp 0.5s ease-out both;
 }
 
 .formContainer label {
-    margin: 10px 0;
-    font-size: 16px;
+    margin: var(--space-xs) 0;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
 }
 
 .formContainer select,
 .formContainer input[type="number"] {
-    padding: 8px;
-    margin-left: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: var(--space-sm) var(--space-md);
+    margin-left: var(--space-sm);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    background: var(--surface-glass);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    outline: none;
+    transition: border-color var(--transition-base), box-shadow var(--transition-base),
+        background var(--transition-base);
+}
+
+.formContainer select:hover,
+.formContainer input[type="number"]:hover {
+    border-color: var(--border-default);
+    background: var(--surface-glass-hover);
+}
+
+.formContainer select:focus,
+.formContainer input[type="number"]:focus {
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 3px rgba(123, 47, 247, 0.2), var(--shadow-glow-purple);
+    background: var(--surface-glass-hover);
+}
+
+.formContainer select option {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
 }
 
 .formContainer input[type="number"]:disabled {
-    background-color: #f9f9f9;
-    color: #999;
+    background-color: var(--surface-glass);
+    color: var(--text-muted);
+    border-color: var(--border-subtle);
+    cursor: not-allowed;
+    opacity: 0.5;
 }
 
 .formContainer input[type="number"],
@@ -39,101 +80,146 @@
     }
 
     .formContainer label {
-        margin: 10px;
+        margin: var(--space-sm);
     }
 }
+
+/* ── Grid Visualization ── */
 
 .gridbox {
     display: grid;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 20px;
-    gap: 10px; /* A mystical gap between cells */
+    margin: var(--space-lg);
+    gap: 6px;
+    padding: var(--space-lg);
+    background: var(--surface-glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    animation: fadeInUp 0.6s ease-out both;
+    animation-delay: 0.1s;
 }
+
 .gridRow {
     display: flex;
+    gap: 2px;
 }
 
 .gridCell {
     width: 50px;
     height: 50px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--surface-glass);
+    border-radius: var(--radius-sm);
+    transition: background-color var(--transition-base), border-color var(--transition-base),
+        box-shadow var(--transition-base), transform var(--transition-fast),
+        color var(--transition-base);
 }
+
+.gridCell:hover {
+    background: var(--surface-glass-active);
+    border-color: var(--border-default);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-sm);
+    color: var(--text-primary);
+}
+
 .gridCell.visited {
-    background-color: #90ee90;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 212, 255, 0.1));
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.25), 0 0 4px rgba(0, 255, 136, 0.1);
+    animation: scaleIn 0.3s ease-out both;
 }
+
+/* ── Snackbar Toast ── */
 
 .snackbar {
-    visibility: hidden; /* Hidden by default. Visible on click */
-    min-width: 250px; /* Set a default minimum width */
-    margin-left: -125px; /* Divide value of min-width by 2 */
-    background-color: #333; /* Black background color */
-    color: #fff; /* White text color */
-    text-align: center; /* Centered text */
-    border-radius: 2px; /* Rounded borders */
-    padding: 16px; /* Padding */
-    position: fixed; /* Sit on top of the screen */
-    z-index: 1; /* Add a z-index if needed */
-    left: 50%; /* Center the snackbar */
-    bottom: 30px; /* 30px from the bottom */
+    visibility: hidden;
+    min-width: 280px;
+    margin-left: -140px;
+    background: var(--bg-elevated);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: var(--text-primary);
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    padding: var(--space-md) var(--space-lg);
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    bottom: 30px;
+    box-shadow: var(--shadow-lg), 0 0 20px rgba(123, 47, 247, 0.15);
 }
 
-/* Show the snackbar when clicking on a button (class added with JavaScript) */
 .snackbar.show {
-    visibility: visible; /* Show the snackbar */
-    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
-  However, delay the fade out process for 2.5 seconds */
-    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    visibility: visible;
+    -webkit-animation: snackSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        snackSlideOut 0.4s cubic-bezier(0.55, 0, 1, 0.45) 2.6s;
+    animation: snackSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        snackSlideOut 0.4s cubic-bezier(0.55, 0, 1, 0.45) 2.6s;
 }
 
-/* Animations to fade the snackbar in and out */
+/* ── Keyframes ── */
+
 @-webkit-keyframes fadein {
-    from {
-        bottom: 0;
-        opacity: 0;
-    }
-    to {
-        bottom: 30px;
-        opacity: 1;
-    }
+    from { bottom: 0; opacity: 0; }
+    to { bottom: 30px; opacity: 1; }
 }
 
 @keyframes fadein {
-    from {
-        bottom: 0;
-        opacity: 0;
-    }
-    to {
-        bottom: 30px;
-        opacity: 1;
-    }
+    from { bottom: 0; opacity: 0; }
+    to { bottom: 30px; opacity: 1; }
 }
 
 @-webkit-keyframes fadeout {
-    from {
-        bottom: 30px;
-        opacity: 1;
-    }
-    to {
-        bottom: 0;
-        opacity: 0;
-    }
+    from { bottom: 30px; opacity: 1; }
+    to { bottom: 0; opacity: 0; }
 }
 
 @keyframes fadeout {
+    from { bottom: 30px; opacity: 1; }
+    to { bottom: 0; opacity: 0; }
+}
+
+@keyframes snackSlideIn {
+    from {
+        bottom: -20px;
+        opacity: 0;
+        transform: translateY(10px) scale(0.95);
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes snackSlideOut {
     from {
         bottom: 30px;
         opacity: 1;
+        transform: translateY(0) scale(1);
     }
     to {
-        bottom: 0;
+        bottom: -20px;
         opacity: 0;
+        transform: translateY(10px) scale(0.95);
     }
 }

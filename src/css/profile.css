@@ -1,0 +1,166 @@
+/* ======================================
+   Profile Page — Cosmic Dark Theme
+   ====================================== */
+
+.profile-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: var(--space-2xl) var(--space-xl);
+    min-height: calc(100vh - 64px);
+    animation: fadeIn 0.6s ease-out both;
+}
+
+.profile-container {
+    width: 100%;
+    max-width: 600px;
+    background: var(--surface-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg), inset 0 1px 0 var(--border-subtle);
+    padding: var(--space-2xl);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* subtle top gradient line */
+.profile-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
+    animation: gradientShift 5s ease infinite;
+    background-size: 200% 100%;
+}
+
+.profile-header {
+    margin-bottom: var(--space-xl);
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid transparent;
+    background-image: linear-gradient(var(--bg-card), var(--bg-card)), linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    margin-bottom: var(--space-md);
+    box-shadow: var(--shadow-md), 0 0 20px rgba(0, 212, 255, 0.2);
+    animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.profile-header h1 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-top: var(--space-sm);
+    letter-spacing: -0.02em;
+}
+
+.profile-details {
+    text-align: left;
+    background: var(--glass-heavy);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-xl);
+}
+
+.profile-details p {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-md);
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: var(--space-sm);
+}
+
+.profile-details strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.profile-details h1 {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--text-primary);
+    margin: var(--space-lg) 0 var(--space-md);
+    padding-top: var(--space-sm);
+}
+
+.profile-details ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: var(--space-xl);
+}
+
+.profile-details li {
+    background: var(--surface-glass);
+    border-left: 3px solid var(--accent-cyan);
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-xs);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    transition: transform var(--transition-fast), background var(--transition-fast);
+}
+
+.profile-details li:hover {
+    transform: translateX(4px);
+    background: var(--surface-glass-hover);
+}
+
+.profile-details li h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.button-group {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+}
+
+.logout-button {
+    padding: 12px 24px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    flex: 1;
+}
+
+.logout-button:first-of-type {
+    background: var(--surface-glass-active);
+    color: var(--text-primary);
+    border: 1px solid var(--border-subtle);
+}
+
+.logout-button:first-of-type:hover {
+    background: var(--glass-panel);
+    border-color: var(--border-default);
+}
+
+.logout-button:last-of-type {
+    background: linear-gradient(135deg, var(--accent-red), #ff2d55);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(255, 71, 87, 0.25);
+}
+
+.logout-button:last-of-type:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
+    filter: brightness(1.1);
+}

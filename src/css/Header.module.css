@@ -1,33 +1,192 @@
-/* Header.css */
+/* ============================================
+   HEADER — Glassmorphic Navigation Bar
+   ============================================ */
+
 .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    border-bottom: 2px solid #e9ecef; /* Optional border for separation */
+    padding: 0 var(--space-xl);
+    height: 64px;
+    background: rgba(10, 10, 26, 0.7);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border-subtle);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    transition: background var(--transition-base), box-shadow var(--transition-base);
+    animation: fadeIn 0.5s ease;
 }
 
+:global(.light-theme) .header {
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* --- Logo --- */
+.logo {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple), var(--accent-green));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite;
+    letter-spacing: -0.02em;
+    cursor: default;
+    user-select: none;
+}
+
+.logoAccent {
+    font-weight: 400;
+    opacity: 0.7;
+}
+
+/* --- Nav Actions Container --- */
+.navActions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+/* --- Home Button --- */
 .homeButtonContainer {
-    flex: 0 0 auto; /* Ensure it doesn't grow or shrink */
+    flex: 0 0 auto;
 }
 
 .homeButton {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: var(--text-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    background: var(--surface-glass);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-full);
     text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+    transition: all var(--transition-base);
+    cursor: pointer;
 }
 
 .homeButton:hover {
-    background-color: #237da3;
+    background: var(--surface-glass-hover);
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+    box-shadow: var(--shadow-glow-cyan);
+    transform: translateY(-1px);
 }
 
-.header h1 {
-    flex: 1; /* Allow the heading to take up remaining space */
-    text-align: center; /* Center the text */
-    margin: 0; /* Remove default margin */
-    color: var(--text-color); /* Dark text color */
+.homeButton svg {
+    width: 14px;
+    height: 14px;
+    transition: transform var(--transition-base);
+}
+
+.homeButton:hover svg {
+    transform: translateX(-2px);
+}
+
+/* --- Theme Toggle --- */
+.themeToggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--surface-glass);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all var(--transition-base);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+.themeToggle:hover {
+    background: var(--surface-glass-hover);
+    border-color: var(--accent-yellow);
+    box-shadow: 0 0 20px rgba(255, 211, 42, 0.15);
+    transform: scale(1.05);
+}
+
+.themeIcon {
+    transition: transform var(--transition-spring);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.themeToggle:hover .themeIcon {
+    transform: rotate(30deg);
+}
+
+/* --- Auth Button --- */
+.loginButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    background: linear-gradient(135deg, rgba(123, 47, 247, 0.15), rgba(0, 212, 255, 0.15));
+    border: 1px solid rgba(123, 47, 247, 0.3);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    text-decoration: none;
+}
+
+.loginButton:hover {
+    background: linear-gradient(135deg, rgba(123, 47, 247, 0.25), rgba(0, 212, 255, 0.25));
+    border-color: var(--accent-purple);
+    box-shadow: var(--shadow-glow-purple);
+    transform: translateY(-1px);
+}
+
+/* --- Profile Avatar --- */
+.profileSection {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.profileAvatar {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-full);
+    border: 2px solid transparent;
+    background-image: linear-gradient(var(--bg-card), var(--bg-card)), linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    transition: all var(--transition-base);
+    cursor: pointer;
+    object-fit: cover;
+}
+
+.profileAvatar:hover {
+    box-shadow: 0 0 16px rgba(0, 212, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.profileName {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+}
+
+.profileName:hover {
+    color: var(--accent-cyan);
 }

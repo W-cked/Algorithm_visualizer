@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
-import Header from "../header";
-import SectionNav from "../sectionNav";
+import { motion } from "framer-motion";
 import axios from "axios";
-import styles from "../../css/Bfs.module.css";
+import "../../css/bubbleSort.css";
+import SectionNav from "../sectionNav";
 
 const Dfs = () => {
     const svgRef = useRef(null);
@@ -12,16 +12,16 @@ const Dfs = () => {
     const [targetNodeName, setTargetNodeName] = useState("");
     const [foundNode, setFoundNode] = useState(null);
     const [visitedNodes, setVisitedNodes] = useState([]);
-    const [logs, setLogs] = useState([]); // State to store logs
+    const [isSearching, setIsSearching] = useState(false);
+    const [currentStep, setCurrentStep] = useState("Ready to configure.");
+    const [logs, setLogs] = useState([]);
 
-    // Effect to draw the tree when data changes
     useEffect(() => {
         if (!treeData) return;
 
         const width = 700;
         const height = 700;
 
-        // Clear previous SVG content before re-rendering
         d3.select(svgRef.current).selectAll("*").remove();
 
         const svg = d3
@@ -35,7 +35,6 @@ const Dfs = () => {
         const rootNode = d3.hierarchy(treeData);
         treeLayout(rootNode);
 
-        // Draw links
         svg.selectAll(".link")
             .data(rootNode.links())
             .enter()
@@ -52,7 +51,6 @@ const Dfs = () => {
                     .x((d) => d.x)
             );
 
-        // Draw nodes
         const nodes = svg
             .selectAll(".node")
             .data(rootNode.descendants())
@@ -63,24 +61,28 @@ const Dfs = () => {
 
         nodes
             .append("circle")
-            .attr("r", 8)
+            .attr("r", 20)
             .attr("fill", (d) => {
-                if (foundNode && d.data.name === foundNode) return "orange"; // Highlight found node
-                if (visitedNodes.includes(d.data.name)) return "red"; // Highlight visited nodes
-                return "blue";
-            });
+                if (foundNode && d.data.name === foundNode) return "var(--success-color)";
+                if (visitedNodes.includes(d.data.name)) return "var(--primary-color)";
+                return "var(--surface-color)";
+            })
+            .attr("stroke", "var(--border-color)")
+            .attr("stroke-width", "2px");
 
         nodes
             .append("text")
             .attr("dy", ".35em")
-            .attr("x", (d) => (d.children ? -13 : 13))
-            .attr("fill", "white")
-            .style("text-anchor", (d) => (d.children ? "end" : "start"))
+            .attr("x", 0)
+            .attr("fill", "#ffffff")
+            .style("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("font-weight", "bold")
             .text((d) => d.data.name);
-    }, [treeData, foundNode, visitedNodes]); // Re-render the tree when treeData, foundNode, or visitedNodes changes
+    }, [treeData, foundNode, visitedNodes]);
 
-    // Function to generate a binary tree with a given number of nodes
     const generateNodes = (number) => {
+        if (isSearching) return;
         if (isNaN(number) || number <= 0) {
             alert("Please enter a valid number of nodes to generate!");
             return;
@@ -96,7 +98,6 @@ const Dfs = () => {
             while (count < num) {
                 const currentNode = queue.shift();
 
-                // Add left child
                 if (count < num) {
                     count++;
                     const leftChild = { name: `${count}`, children: [] };
@@ -104,7 +105,6 @@ const Dfs = () => {
                     queue.push(leftChild);
                 }
 
-                // Add right child
                 if (count < num) {
                     count++;
                     const rightChild = { name: `${count}`, children: [] };
@@ -119,44 +119,45 @@ const Dfs = () => {
         const newTreeData = createBinaryTree(number);
         setTreeData(newTreeData);
         setNodeNumber("");
-        setLogs((prevLogs) => [
-            ...prevLogs,
-            `Generated tree with ${number} nodes`,
-        ]); // Log the action
-    };
-
-    // Function to search and highlight a node by name using DFS
-    const searchNodeName = async (targetName) => {
         setFoundNode(null);
         setVisitedNodes([]);
-        setLogs((prevLogs) => [
-            ...prevLogs,
-            `Started DFS search for node: ${targetName}`,
-        ]);
+        setLogs([]);
+        setCurrentStep(`Generated binary tree with ${number} nodes.`);
+    };
 
-        if (!targetName) {
-            alert("Please enter a node name to search for!");
+    const searchNodeName = async (targetName) => {
+        if (isSearching) return;
+        if (!targetName || !treeData) {
+            alert("Please generate a tree and enter a node name to search for!");
             return;
         }
+
+        setFoundNode(null);
+        setVisitedNodes([]);
+        setLogs([]);
+        setIsSearching(true);
+        setCurrentStep(`Initializing DFS search for node ${targetName}...`);
 
         const dfsSearch = async (node) => {
             setVisitedNodes((prevVisitedNodes) => [
                 ...prevVisitedNodes,
                 node.data.name,
             ]);
+            setCurrentStep(`Visited node: ${node.data.name}`);
             setLogs((prevLogs) => [
                 ...prevLogs,
                 `Visited node: ${node.data.name}`,
-            ]); // Log the visited node
+            ]);
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
             if (node.data.name === targetName) {
-                setFoundNode(targetName); // Highlight the found node
+                setFoundNode(targetName);
+                setCurrentStep(`Found node: ${targetName}`);
                 setLogs((prevLogs) => [
                     ...prevLogs,
-                    `Found node: ${targetName}`,
-                ]); // Log the found node
+                    `Success! Node ${targetName} found.`,
+                ]);
                 return true;
             }
 
@@ -171,102 +172,129 @@ const Dfs = () => {
             return false;
         };
 
-        if (localStorage.getItem("userInfo")) {
-            const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-            const config = {
-                headers: {
-                    "Content-type": "application/json",
-                },
-            };
-            const { data } = await axios.post(
-                import.meta.env.VITE_topic,
-                { userID: userInfo.userID, topic: "DFS", completed: true },
-                config
-            );
-
-            console.log("Submitted:", {
-                data,
-            });
+        const rootNode = d3.hierarchy(treeData);
+        const found = await dfsSearch(rootNode);
+        
+        if (!found) {
+            setCurrentStep(`Search complete. Node ${targetName} was not found.`);
+        } else {
+            if (localStorage.getItem("userInfo")) {
+                const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+                axios.post(
+                    import.meta.env.VITE_topic,
+                    { userID: userInfo.userID, topic: "DFS", completed: true },
+                    { headers: { "Content-type": "application/json" }, withCredentials: true }
+                ).catch(console.error);
+            }
         }
 
-        const rootNode = d3.hierarchy(treeData);
-        await dfsSearch(rootNode);
-        setTargetNodeName(""); // Clear input field after searching
+        setIsSearching(false);
+        setTargetNodeName("");
     };
 
     return (
-        <div>
-            <Header />
+        <>
             <SectionNav />
-            <div className={styles.container}>
-                <h2 className={styles.heading}>
-                    Depth First Search Visualization
-                </h2>
-                <p className={styles.paragraph}>
-                    Depth First Search (DFS) is an algorithm used for traversing
-                    or searching tree or graph data structures. The algorithm
-                    starts at the root node and explores as far as possible
-                    along each branch before backtracking.
-                </p>
-            </div>
-            <div className={styles.inputContainer}>
-                <input
-                    type="number"
-                    value={nodeNumber}
-                    placeholder="Number of nodes"
-                    onChange={(e) => setNodeNumber(e.target.value)}
-                    style={{ marginRight: "10px" }}
-                />
-                <button onClick={() => generateNodes(parseInt(nodeNumber))}>
-                    Generate Nodes
-                </button>
-            </div>
-            <div className={styles.inputContainer}>
-                <input
-                    type="text"
-                    value={targetNodeName}
-                    placeholder="Node name to search"
-                    onChange={(e) => setTargetNodeName(e.target.value)}
-                    style={{ marginRight: "10px" }}
-                />
-                <button onClick={() => searchNodeName(targetNodeName)}>
-                    Search Node
-                </button>
-            </div>
-            <div style={{ display: "flex", marginTop: "20px" }}>
-                <div className={styles.stepsContainer}>
-                    <h3>Steps</h3>
-                    <ul>
-                        <li>
-                            Enter the number of nodes and click &apos;Generate
-                            Nodes&apos; to create the binary tree.
-                        </li>
-                        <li>
-                            Enter the name of the node you want to search for in
-                            the &apos;Node name to search&apos; field.
-                        </li>
-                        <li>
-                            Click &apos;Search Node&apos; to start the DFS
-                            traversal and watch the tree being traversed step by
-                            step.
-                        </li>
-                    </ul>
+            <div className="pdp-container">
+                {/* ═══════════════════════════════════════════
+                    LEFT COLUMN: PRODUCT SHOWCASE STAGE
+                    ═══════════════════════════════════════════ */}
+                <div className="pdp-showcase">
+                    <div className="showcase-stage" style={{ minHeight: "700px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <svg ref={svgRef} style={{ width: "100%", height: "100%", maxWidth: "700px", maxHeight: "700px" }}></svg>
+                    </div>
                 </div>
 
-                <div className={styles.svgContainer}>
-                    <svg ref={svgRef}></svg>
-                </div>
-                <div className={styles.logsContainer}>
-                    <h3>Logs</h3>
-                    <div className={styles.logs}>
-                        {logs.map((log, index) => (
-                            <div key={index}>{log}</div>
-                        ))}
+                {/* ═══════════════════════════════════════════
+                    RIGHT COLUMN: CONFIGURATION PANEL
+                    ═══════════════════════════════════════════ */}
+                <div className="pdp-config">
+                    {/* Header */}
+                    <div className="config-header">
+                        <div className="config-category">Graph Algorithm</div>
+                        <h1 className="config-title">Depth-First Search (DFS)</h1>
+                        <div className="config-rating">
+                            ★★★★★ <span style={{ color: "var(--text-muted)" }}>(1.1k reviews)</span>
+                        </div>
+                        <div className="config-price">
+                            Free <span>₹14.99</span>
+                        </div>
+                    </div>
+
+                    {/* Controls */}
+                    <div className="config-section">
+                        <h3>Configuration</h3>
+                        <div className="config-controls" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                            <div style={{ display: "flex", gap: "10px" }}>
+                                <input
+                                    type="number"
+                                    value={nodeNumber}
+                                    placeholder="Number of nodes"
+                                    onChange={(e) => setNodeNumber(e.target.value)}
+                                    style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "1px solid var(--border-color)", background: "var(--surface-color)", color: "var(--text-color)" }}
+                                />
+                                <button 
+                                    className="btn-secondary" 
+                                    onClick={() => generateNodes(parseInt(nodeNumber))} 
+                                    disabled={isSearching}
+                                >
+                                    Generate Tree
+                                </button>
+                            </div>
+                            <div style={{ display: "flex", gap: "10px" }}>
+                                <input
+                                    type="text"
+                                    value={targetNodeName}
+                                    placeholder="Node name to search"
+                                    onChange={(e) => setTargetNodeName(e.target.value)}
+                                    style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "1px solid var(--border-color)", background: "var(--surface-color)", color: "var(--text-color)" }}
+                                />
+                                <button 
+                                    className="btn-primary" 
+                                    onClick={() => searchNodeName(targetNodeName)} 
+                                    disabled={isSearching || !treeData}
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                    Search Node
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Algorithm Specs / Theory */}
+                    <div className="config-section">
+                        <h3>Product Details</h3>
+                        <p className="config-theory">
+                            Depth-First Search (DFS) is a recursive traversal algorithm that explores as deeply as possible along each branch before backtracking. 
+                            Uses a Stack structure (or recursion) to probe to the leaves of the graph or tree. 
+                            Excellent for topological sorting, cycle detection, and solving maze puzzles. Time complexity is O(V + E) where V is vertices and E is edges.
+                        </p>
+                    </div>
+
+                    {/* Live Specs / Execution Logs */}
+                    <div className="config-section">
+                        <h3>Live Diagnostic Log</h3>
+                        <div className="log-box">
+                            <motion.div 
+                                key={currentStep}
+                                initial={{ opacity: 0, y: 5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                {currentStep}
+                            </motion.div>
+                            <div style={{ marginTop: "10px", fontSize: "0.9rem", color: "var(--text-muted)", maxHeight: "100px", overflowY: "auto" }}>
+                                {logs.map((log, i) => (
+                                    <div key={i}>{log}</div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

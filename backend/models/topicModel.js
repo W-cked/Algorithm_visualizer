@@ -1,11 +1,10 @@
-/* eslint-disable no-undef */
 const mongoose = require("mongoose");
 
 const topicSchema = new mongoose.Schema(
     {
         userID: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User", // Refers to the User schema
+            ref: "User",
             required: [true, "User ID is required"],
         },
         topic: {
@@ -15,11 +14,11 @@ const topicSchema = new mongoose.Schema(
         },
         completed: {
             type: Boolean,
-            default: false, // Defaults to incomplete
+            default: false,
         },
     },
     { timestamps: true }
-); // Adds createdAt and updatedAt fields
+);
 
 const Topic = mongoose.model("Topic", topicSchema);
 module.exports = Topic;

@@ -1,106 +1,143 @@
-/* Styles for Grid Component */
-/* dijkstra.css */
-/* dijkstra.css */
+/* ======================================
+   Dijkstra Grid — Cosmic Dark Theme
+   ====================================== */
 
 .theorySection {
     text-align: center;
-    margin: 20px;
+    margin: var(--space-lg);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    animation: fadeInUp 0.5s ease-out both;
 }
 
+/* --- Side Panels --- */
 .instructions,
 .steps {
     width: 20%;
-    margin: 10px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin: var(--space-sm);
+    padding: var(--space-md);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--surface-glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-md);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
 }
 
 .instructions h3,
 .steps h3 {
     margin-top: 0;
+    font-family: var(--font-display);
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
 }
 
 .instructions p,
 .steps p {
     margin: 5px 0;
+    line-height: 1.6;
 }
 
 .instructions ul {
     padding-left: 20px;
+    color: var(--text-secondary);
 }
+
+/* --- Details Panel --- */
 .Details {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px 0;
-    padding: 10px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
+    margin: var(--space-lg) 0;
+    padding: var(--space-md);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--surface-glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-md);
+    animation: fadeInUp 0.5s ease-out 0.1s both;
 }
 
 .Details > div {
-    margin: 10px 0;
+    margin: var(--space-sm) 0;
 }
 
 .Details p {
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.6;
     text-align: left;
+    color: var(--text-secondary);
 }
 
 .Details button,
 .Details select-wrapper {
     margin: 5px;
-    padding: 10px 15px;
-    border: 1px solid #888;
-    border-radius: 5px;
-    background-color: #ffffff;
-    color: #333;
+    padding: 10px 18px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
     cursor: pointer;
+    font-family: var(--font-body);
     font-size: 14px;
+    font-weight: 500;
+    transition: background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
 }
 
 .Details button:disabled {
-    background-color: #e0e0e0;
-    color: #aaa;
+    background: var(--bg-medium);
+    color: var(--text-muted);
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 .Details button:hover:not(:disabled) {
-    border-color: #666;
-    background-color: #f1f1f1;
+    border-color: var(--accent-cyan);
+    background: rgba(0, 212, 255, 0.1);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.15);
+    transform: translateY(-1px);
 }
 
-/* Custom select wrapper */
+/* --- Select Wrapper --- */
 .selectWrapper {
     position: relative;
     display: inline-block;
-    width: 160px; /* Adjust as needed */
+    width: 160px;
     margin: 5px;
 }
 
 .selectWrapper select {
     width: 100%;
     padding: 8px 12px;
-    border: 1px solid #888;
-    border-radius: 5px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     cursor: pointer;
+    font-family: var(--font-body);
     font-size: 14px;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.selectWrapper select:focus {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.12);
 }
 
 .selectWrapper select:disabled {
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background: var(--bg-medium);
+    color: var(--text-muted);
     cursor: not-allowed;
 }
 
-/* Dropdown arrow styling */
+/* Dropdown arrow */
 .selectWrapper::after {
     content: "▼";
     position: absolute;
@@ -108,71 +145,102 @@
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
-    font-size: 12px;
-    color: var(--text-color);
+    font-size: 10px;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
 }
 
+.selectWrapper:hover::after {
+    color: var(--accent-cyan);
+}
+
+/* --- Grid Layout --- */
 .gridBox {
     display: flex;
     justify-content: center;
+    padding: var(--space-md) 0;
+    animation: fadeIn 0.6s ease-out 0.15s both;
 }
-/* Grid Container */
+
 .gridContainer {
     display: grid;
-    grid-template-columns: repeat(20, 1fr); /* 10 columns */
-    border: 1px solid #ccc; /* Border around the grid */
-    width: 100%; /* Full width */
-    max-width: 800px; /* Max width for responsiveness */
-    padding: 10px; /* Padding around the grid */
+    grid-template-columns: repeat(20, 1fr);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    width: 100%;
+    max-width: 800px;
+    padding: 4px;
+    background: var(--bg-card);
+    box-shadow: var(--shadow-lg), inset 0 1px 0 var(--surface-glass);
+    overflow: hidden;
 }
 
-/* Grid Cell */
+/* --- Grid Cell --- */
 .gridCell {
-    height: 30px; /* Cell height */
-    line-height: 30px; /* Vertical centering */
+    height: 30px;
+    line-height: 30px;
     text-align: center;
-    background-color: #1f1f1f;
-    color: rgb(255, 255, 255);
-    border: 1px solid #000000;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    border: 1px solid var(--border-subtle);
     cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-/* Hover effect */
 .gridCell:hover {
-    background-color: #393838;
+    background-color: var(--bg-elevated);
+    box-shadow: inset 0 0 8px rgba(0, 212, 255, 0.1);
 }
 
+/* --- Cell States --- */
 .visited {
-    background-color: lightblue;
+    background-color: rgba(0, 212, 255, 0.3);
+    box-shadow: inset 0 0 6px rgba(0, 212, 255, 0.2);
+    animation: fadeIn 0.3s ease-out both;
 }
 
 .path {
-    background-color: yellow;
+    background-color: rgba(255, 211, 42, 0.65);
+    box-shadow: inset 0 0 10px rgba(255, 211, 42, 0.35), 0 0 6px rgba(255, 211, 42, 0.2);
+    animation: glowPulse 1.5s ease-in-out infinite;
 }
+
 .start {
-    background-color: greenyellow;
+    background-color: var(--accent-green);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
 }
+
 .start:hover {
-    background-color: rgb(141, 212, 34);
+    background-color: #00e07a;
+    box-shadow: 0 0 14px rgba(0, 255, 136, 0.55);
 }
 
 .end {
-    background-color: red;
+    background-color: var(--accent-red);
+    box-shadow: 0 0 10px rgba(255, 71, 87, 0.4);
 }
 
 .end:hover {
-    background-color: rgb(190, 0, 0);
+    background-color: #e0303f;
+    box-shadow: 0 0 14px rgba(255, 71, 87, 0.55);
 }
 
 .wall {
-    background-color: #6c00ca;
+    background-color: var(--accent-purple);
+    box-shadow: inset 0 0 8px rgba(123, 47, 247, 0.3);
 }
+
 .wall:hover {
-    background-color: #530291;
+    background-color: #6320d4;
+    box-shadow: inset 0 0 12px rgba(123, 47, 247, 0.45);
 }
+
 .weight {
-    background-color: #1f1f1f;
+    background-color: var(--bg-dark);
     background-image: url("../../public/weight.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+    opacity: 0.85;
 }

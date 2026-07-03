@@ -1,67 +1,132 @@
+/* ======================================
+   Bellman-Ford — Cosmic Dark Theme
+   ====================================== */
+
 .container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
+    padding: var(--space-lg);
+    font-family: var(--font-body);
+    animation: fadeInUp 0.5s ease-out both;
 }
+
+/* --- Button Bar --- */
 .Buttons {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.Buttons div {
-    margin-right: 20px;
-    display: flex;
-}
-.divbutton {
-    margin-right: 20px;
-    display: flex;
-    flex-direction: column;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
 }
 
+.Buttons div {
+    margin-right: var(--space-md);
+    display: flex;
+}
+
+.divbutton {
+    margin-right: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+/* --- Button (orange accent) --- */
 .button {
-    margin: 10px 0;
-    padding: 10px 20px;
-    background-color: #4caf50;
-    color: var(--text-color);
+    margin: 6px 0;
+    padding: 10px 22px;
+    background: linear-gradient(135deg, var(--accent-orange), #e05520);
+    color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--radius-md);
     cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+    box-shadow: 0 0 12px rgba(255, 107, 53, 0.25);
 }
 
 .button:hover {
-    background-color: #45a049;
+    transform: translateY(-1px);
+    box-shadow: 0 0 22px rgba(255, 107, 53, 0.45), var(--shadow-md);
+    filter: brightness(1.12);
 }
 
+.button:active {
+    transform: translateY(0);
+    filter: brightness(0.93);
+}
+
+/* --- Input --- */
 .input {
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    font-size: 24px;
+    margin: var(--space-xs);
+    padding: 10px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--surface-glass);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    outline: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
+.input::placeholder {
+    color: var(--text-muted);
+}
+
+.input:focus {
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15), var(--shadow-sm);
+}
+
+/* --- Label --- */
 .label {
-    margin: 10px 0;
+    margin: var(--space-xs) 0;
     display: block;
-    font-weight: bold;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
 }
 
+/* --- Main Layout --- */
 .main {
     display: flex;
     justify-content: center;
+    gap: var(--space-lg);
+    margin-top: var(--space-md);
+    animation: fadeIn 0.6s ease-out 0.15s both;
 }
 
+/* --- Shortest Path Result --- */
 .shortestPath {
     width: 300px;
-    margin-top: 20px;
-    font-weight: bold;
-    color: var(--text-color);
+    margin-top: var(--space-md);
+    padding: var(--space-md);
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    background: var(--surface-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
 }
 
+/* --- SVG Container --- */
 .svgContainer svg {
-    margin-top: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #242424;
+    margin-top: var(--space-md);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+    box-shadow: var(--shadow-lg), inset 0 1px 0 var(--surface-glass);
+    transition: box-shadow var(--transition-base);
+}
+
+.svgContainer svg:hover {
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(255, 107, 53, 0.08);
 }

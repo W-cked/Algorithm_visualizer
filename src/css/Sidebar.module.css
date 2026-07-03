@@ -1,0 +1,197 @@
+/* ======================================
+   Sidebar — Organic Floating Design
+   ====================================== */
+
+.sidebar {
+    width: max-content;
+    min-width: 80px;
+    max-width: 280px;
+    height: 100vh;
+    margin: 0;
+    background: var(--glass-heavy);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-right: 1px solid var(--border-default);
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-lg) 0;
+    z-index: 100;
+    box-shadow: var(--shadow-md), inset 0 0 32px var(--glass-surface);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow-x: hidden;
+    flex-shrink: 0;
+}
+
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.logo {
+    padding: 0 var(--space-xl);
+    margin-bottom: var(--space-2xl);
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .logo {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.navGroup {
+    margin-bottom: var(--space-xl);
+}
+
+.navLabel {
+    padding: 0 var(--space-xl);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .navLabel {
+    opacity: 0;
+}
+
+.navList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.navItem {
+    padding: 0 var(--space-md);
+}
+
+.navLink {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: var(--radius-xl);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.navLink::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--glass-surface), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+}
+
+.navLink:hover::before {
+    opacity: 1;
+}
+
+.navLink:hover {
+    color: var(--text-primary);
+    transform: translateX(4px);
+}
+
+.navLink.active {
+    background: rgba(123, 47, 247, 0.1);
+    color: var(--text-primary);
+    box-shadow: inset 0 0 0 1px rgba(123, 47, 247, 0.3);
+}
+
+.navIcon {
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    min-width: 24px;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.navText {
+    z-index: 1;
+}
+
+.navLink:hover .navIcon {
+    opacity: 1;
+    transform: scale(1.1) rotate(-5deg);
+    color: var(--accent-cyan);
+}
+
+.navLink.active .navIcon {
+    opacity: 1;
+    color: var(--accent-purple);
+}
+
+.sidebar.collapsed .navText {
+    display: none;
+}
+
+.sidebar.collapsed .navLink {
+    padding: 12px;
+    justify-content: center;
+}
+
+/* Mobile Responsive Drawer */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -320px; /* Hidden offscreen initially */
+        margin: 0;
+        height: 100vh;
+        width: 280px; /* Fixed width for mobile drawer */
+        border-radius: 0 24px 24px 0;
+        border-left: none;
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar.mobileOpen {
+        left: 0;
+    }
+
+    /* We don't use collapsed state on mobile */
+    .sidebar.collapsed {
+        width: 280px; 
+    }
+    
+    .sidebar.collapsed .navText {
+        display: block;
+    }
+    
+    .sidebar.collapsed .logo,
+    .sidebar.collapsed .navLabel {
+        opacity: 1;
+    }
+}
